@@ -20,44 +20,48 @@
                     adipisicing elit. Unde nihil doloribus excepturi quisquam error possimus
                     veritatis facere, commodi cumque ab atque dolore ducimus obcaecati ipsa,
                     impedit! Consequuntur, eligendi iure cumque!</p>
-                <div class="form-group">
+<!--                <div class="form-group">
                     <div ng-controller="OverallRatingController">
                         <h3>Overall Rating</h3>
                         <rating max="5" ng-model="rating" readonly="true"></rating>
 
-                        <!--<span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70,
+                        &lt;!&ndash;<span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70,
                         'label-success': percent>=70}" ng-show= true>{{percent}}%</span> {{ totalreview }} {{0==totalreview ? 'review' : 1==totalreview ? ' review' : ' reviews'}}
-                        -->
+                        &ndash;&gt;
                         <span class="label">{{percent}} {{totalReview}}
                         {{0 == totalReview ? 'review' : 1 == totalReview ? ' review' : 'reviews'}}</span>
                     </div>
-                </div>
+                </div>-->
             </section>
 
             <section>
                 <h2>Add a Comment</h2>
                 <form ng-submit="addComment(newComment)">
                     <div class="form-group">
-                        <label>Name: </label>
-                        <input type="text" id="name" class="form-control"
-                               placeholder="name" ng-model="newComment.name"/>
-                    </div>
-                    <div class="form-group">
                         <label>Title: </label>
                         <input type="text" id="title" class="form-control"
                                placeholder="title" ng-model="newComment.title"/>
                     </div>
+
                     <div class="form-group">
-                        <label>Comment: </label>
-                        <input type="text" id="commentBody" class="form-control"
-                               placeholder="comment" ng-model="newComment.commentBody"/>
+                        <label>Name: </label>
+                        <input type="text" id="name" class="form-control"
+                               placeholder="name" ng-model="newComment.name"/>
                     </div>
+
                     <div class="form-group">
                         <label>Rating</label>
                         <div>
                             <rating max="5" ng-model="newComment.rating"></rating>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label>Comment: </label>
+                        <input type="text" id="commentBody" class="form-control"
+                               placeholder="comment" ng-model="newComment.commentBody"/>
+                    </div>
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary" ng-disabled="inserting">Add Comment</button>
                         <img src="img/ajax-spinner.gif" alt="loading animation" ng-if="inserting"/>
@@ -75,8 +79,11 @@
 
             <section>
                 <h2>Comments</h2>
-                <p>{{0 == comments.length?'No comments yet. Be the first to review this!': (1 == comments.length ? 'Comment' : 'Comments')}}</p>
-                </p>
+<!--                <p>{{0 == comments.length?'No comments yet. Be the first to review this!': (1 == comments.length ? 'Comment' : 'Comments')}}</p>
+                </p>-->
+                <div ni-if="comments == 0">
+                    <p> No comments yet. Be the first to review this!</p>
+                </div>
                 <p>
                     <button class="btn btn-primary" ng-click="refreshComments()">Refresh</button>
                     <img src="img/ajax-spinner-sm.gif" alt="loading animation" ng-if="loading || updating"/>
@@ -88,35 +95,35 @@
                  -->
 
                 <table class="table">
-                    <li class="li" ng-repeat="comment in comments | orderBy : '-scores'"
-                        ng-class="{delete: comment.delete}">
+                    <li class="li" ng-repeat="comment in comments">
+                        <span class="glyphicon glyphicon-remove" ng-click="removeComment(comment)"></span>
+
                         <thead>
                         <tr>
-                            <th>Name</th>
                             <th>Title</th>
-                            <th>Comment</th>
+                            <th>Name</th>
                             <th>Rating</th>
-                            <th>Score</th>
+                            <th>Comment</th>
+                            <th>Was this review helpful?</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="comment in comments" ng-class="{delete: comment.delete}">
-                            <td>{{comment.name}}</td>
+                        <tr ng-repeat="comment in comments" ng-if="comment.votes > 0" ng-class="{delete: comment.delete}">
                             <td>{{comment.title}}</td>
+                            <td>{{comment.name}}</td>
+                            <td>
+                                <rating max="5" ng-model="comment.rating" readonly="true">{{comment.rating}}</rating>
+                            </td>
                             <td>{{comment.comment}}</td>
                             <td>
-                                <rating max="5" ng-model="comment.rating" ng-change="updateComment(comment)"
-                                        readonly="true"></rating>
-                            </td>
-                            <td>
-                                {{comment.scores || 0}}
+                                {{comment.votes || 0}}
                                 <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementVote(comment, 1)"></span>
-                                <span class="glyphicon glyphicon-thumbs-down" ng-click="incrementVote(comment, -1)"></span>
+                                <span class="glyphicon glyphicon-thumbs-down" ng-if="comment.votes != 0" ng-click="incrementVote(comment, -1)"></span>
                             </td>
-                            <td>
+<!--                            <td>
                                 <input type="checkbox" ng-model="comment.delete" ng-change="updateComment(comment)"/>
                                 Remove comment
-                            </td>
+                            </td>-->
                         </tr>
                         </tbody>
                     </li>
