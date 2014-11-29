@@ -9,7 +9,7 @@
     </head>
 
     <body>
-        <main class="container-fluid" ng-ap="AjaxChallenge" ng-controller="CommentController">
+        <main class="container-fluid" ng-app="AjaxChallenge" ng-controller="CommentController">
             <section>
                 <h1>The Super Bass-o-Matic '76</h1>
                 <img src="img/super-bass-o-matic-76.jpg" alt="product picture" class="product-picture">
@@ -40,13 +40,13 @@
                     <div class="form-group">
                         <label>Title: </label>
                         <input type="text" id="title" class="form-control"
-                               placeholder="title" ng-model="newComment.title"/>
+                               placeholder="Title" ng-model="newComment.title"/>
                     </div>
 
                     <div class="form-group">
                         <label>Name: </label>
                         <input type="text" id="name" class="form-control"
-                               placeholder="name" ng-model="newComment.name"/>
+                               placeholder="Name" ng-model="newComment.name"/>
                     </div>
 
                     <div class="form-group">
@@ -59,7 +59,7 @@
                     <div class="form-group">
                         <label>Comment: </label>
                         <input type="text" id="commentBody" class="form-control"
-                               placeholder="comment" ng-model="newComment.commentBody"/>
+                               placeholder="Comment" ng-model="newComment.commentBody"/>
                     </div>
 
                     <div class="form-group">
@@ -95,8 +95,8 @@
                  -->
 
                 <table class="table">
-                    <li class="li" ng-repeat="comment in comments">
-                        <span class="glyphicon glyphicon-remove" ng-click="removeComment(comment)"></span>
+                    <!--<li class="li" ng-repeat="comment in comments">-->
+                        <!--<span class="glyphicon glyphicon-remove" ng-click="removeComment(comment)"></span>-->
 
                         <thead>
                         <tr>
@@ -105,20 +105,24 @@
                             <th>Rating</th>
                             <th>Comment</th>
                             <th>Was this review helpful?</th>
+                            <th>Delete comment?</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="comment in comments" ng-if="comment.votes > 0" ng-class="{delete: comment.delete}">
+                        <tr ng-repeat="comment in comments" ng-class="{delete: comment.delete}">
                             <td>{{comment.title}}</td>
                             <td>{{comment.name}}</td>
                             <td>
-                                <rating max="5" ng-model="comment.rating" readonly="true">{{comment.rating}}</rating>
+                                <rating max="5" ng-model="comment.rating" ng-change="updateComment(comment)" readonly="comment.delete"></rating>
                             </td>
                             <td>{{comment.comment}}</td>
                             <td>
                                 {{comment.votes || 0}}
-                                <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementVote(comment, 1)"></span>
-                                <span class="glyphicon glyphicon-thumbs-down" ng-if="comment.votes != 0" ng-click="incrementVote(comment, -1)"></span>
+                                <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementVotes(comment, 1)"></span>
+                                <span class="glyphicon glyphicon-thumbs-down" ng-if="comment.votes != 0" ng-click="incrementVotes(comment, -1)"></span>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="comment.delete" ng-change="updateComment(comment)"/>
                             </td>
 <!--                            <td>
                                 <input type="checkbox" ng-model="comment.delete" ng-change="updateComment(comment)"/>

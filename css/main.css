@@ -18,3 +18,8 @@ body {
 .glyphicon-remove {
     float: right;
 }
+
+.delete {
+    text-decoration: line-through;
+    color: #999;
+}

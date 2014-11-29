@@ -16,6 +16,8 @@ angular.module('AjaxChallenge', ['ui.bootstrap'])
         $scope.refreshComments = function() {
             $scope.loading = true;
             $http.get(commentsUrl + '?order=-votes')
+//            $http.get(commentsUrl + '?where=("delete": false}')
+
                 .success(function(responseData) {
                     $scope.comments = responseData.results;
  //                   $scope.totalReview = data.results.length;
@@ -41,8 +43,9 @@ angular.module('AjaxChallenge', ['ui.bootstrap'])
                 .success(function(responseData) {
                     comment.objectId = responseData.objectId;
                     $scope.comments.push(comment);
- //                   $scope.newComment = {delete: false};
-                    $scope.newComment = {vote: 0};
+                    $scope.newComment = {delete: false};
+//                    $scope.newComment = {vote: 0};
+//                    $scope.newComment = {done: false};
                 })
                 .error(function(err) {
                     console.log(err);
@@ -69,7 +72,7 @@ angular.module('AjaxChallenge', ['ui.bootstrap'])
 
         $scope.removeComment = function(comment) {
             $http.delete(commentsUrl + '/' + comment.objectId)
-                .success(function(repsonseData) {
+                .success(function(responseData) {
                     // successful delete
                 })
                 .error(function(err) {
@@ -82,20 +85,14 @@ angular.module('AjaxChallenge', ['ui.bootstrap'])
 
         // function to increment votes
         $scope.incrementVotes = function(comment, amount) {
-
-
-/*
-            if ((comment.votes >= 0 && amount == 1) || (comment.votes >= 1 && amount == -1)) {
-*/
+            //if ((comment.votes >= 0 && amount == 1) || (comment.votes >= 1 && amount == -1)) {
                 var postData = {
                     votes: {
                         __op: "Increment",
                         ammount: amount
                     }
                 };
-/*
-            }
-*/
+            //}
 
             $scope.updating = true;
             $http.put(commentsUrl + '/' + comment.objectId, postData)
@@ -110,29 +107,3 @@ angular.module('AjaxChallenge', ['ui.bootstrap'])
                 });
         };
     });
-
-/*
-angular.module('AjaxChallenge')
-    .controller('OverallRatingController', function($scope, $http) {
-        $scope.newComment = {delete: true};
-
-        var index;
-        var total = 0;
-
-        $http.get(commentsUrl + 'where={"delete": false}')
-            .success(function(data) {
-                index = data.results.length;
-
-                for (var i = 0; i < index; ++i) {
-                    total += parseFloat(data.results[i].rating);
-                }
-
-                if (total == 0 || isNaN(total)) {
-                    $scope.percent = 0;
-                    $scope.rating = 0;
-                } else {
-                    $scope.percent = 100 * total/(index * 5);
-                    $scope.rating = ($scope.percent / 100) * 5;
-                }
-            });
-    });*/
