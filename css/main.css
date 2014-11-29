@@ -3,6 +3,33 @@
 body {
     font-family: 'Ubuntu', 'Helvetica Neue', 'Helvetica', sans-serif;
     font-weight: 400;
+    padding: 2em;
+    background-image: url(../img/seamless_paper_texture.png);
+}
+
+.header {
+    margin-bottom: 5%;
+}
+
+.userInput {
+    padding: 1em;
+    padding-top: 0;
+    background-color: rgba(11, 128, 48, 0.38);
+    border-style: groove;
+    border-color: darkseagreen;
+}
+
+.posts {
+    padding: 1em;
+    padding-top: 0;
+    background-color: whitesmoke;
+    border-style: groove;
+    border-color: darkseagreen;
+    margin-bottom: 5%;
+}
+
+#rate {
+    background-color: #fff;
 }
 
 .product-picture {

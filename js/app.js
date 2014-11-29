@@ -39,6 +39,7 @@ angular.module('AjaxChallenge', ['ui.bootstrap'])
         // function to add new comment to list
         $scope.addComment = function(comment) {
             $scope.inserting = true;
+
             $http.post(commentsUrl, comment)
                 .success(function(responseData) {
                     comment.objectId = responseData.objectId;
@@ -89,7 +90,7 @@ angular.module('AjaxChallenge', ['ui.bootstrap'])
                 var postData = {
                     votes: {
                         __op: "Increment",
-                        ammount: amount
+                        amount: amount
                     }
                 };
             //}
